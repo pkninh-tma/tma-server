@@ -77,6 +77,9 @@ server.use('/graphiql', graphiqlExpress({
   endpointURL: '/graphql'
 }))
 
+//RESTful APIs
+require('./rest/rest')(server);
+
 // server.use('/', express.static('public'))
 // server.use(express.static(path.resolve(__dirname, '..', 'public')));
 
@@ -87,3 +90,4 @@ server.use('/graphiql', graphiqlExpress({
 server.listen(config.PORT, () =>
   console.log(`Server is now running on http://localhost:${config.PORT}`)
 )
+

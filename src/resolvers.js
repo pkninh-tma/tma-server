@@ -1,26 +1,24 @@
 import merge from 'lodash/merge'
 
-import Account from './resolvers/account'
 import Auth from './resolvers/auth'
-import Document from './resolvers/document'
-import Investor from './resolvers/investor'
-import Rate from './resolvers/rate'
+import Contact from './resolvers/contact'
+import Message from './resolvers/message'
+import Mailbox from './resolvers/mailbox'
 import User from './resolvers/user'
 
-import GraphQLJSON from 'graphql-type-json';
+// import GraphQLJSON from 'graphql-type-json';
 
-const resolveFunctions = {
-  JSON: GraphQLJSON
-};
+// const resolveFunctions = {
+//   JSON: GraphQLJSON
+// };
 
 const resolvers = merge(
-  Account,
   Auth,
-  Document,
-  Investor,
-  Rate,
+  Contact,
+  Message,
   User,
-  resolveFunctions
+  Mailbox,
+  // resolveFunctions
 )
 
 export default resolvers

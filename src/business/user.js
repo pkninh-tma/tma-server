@@ -21,7 +21,6 @@ const addUser = admin_user => async (username, password, role, permissions) => {
 }
 
 const updateUser = admin_user => async (username, data) => {
-  // console.log(username, data)
   return User
     .updateAsync({ username }, { $set: data }, { new: true })
     .then(() => User.findOne({ _id: username }))
@@ -32,7 +31,6 @@ const updateUserPassword = admin_user => async (username, currentPassword, newPa
 
   if (user) {
     try {
-
       await verify(currentPassword, user.password)
       const newHashedPassword = await hash(newPassword)
 

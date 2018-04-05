@@ -8,14 +8,13 @@ const getMessages = async (args, skip, limit, sortBy) => {
   return { items: result, total }
 }
 
-const addMessage = admin_user => async (from, to, subject, create_time, status) => {
-  // console.log('file info', file)
+const addMessage = admin_user => async (from, to, subject, create_time, type) => {
   const doc = new Message({
     from, 
     to,
     subject,
     create_time: create_time || moment().unix(),
-    status
+    type
   })
   return doc.saveAsync()
 }
@@ -34,6 +33,6 @@ const deleteMessage = admin_user => _id => {
 export {
   addMessage,
   updateMessage,
-  deleteDocument,
-  getDocuments
+  deleteMessage,
+  getMessages
 }
