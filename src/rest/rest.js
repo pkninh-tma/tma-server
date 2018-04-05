@@ -1,6 +1,7 @@
 import { addContact, updateContact, deleteContact, getContacts } from '../business/contact'
 import { addMessage, updateMessage, deleteMessage, getMessages } from  '../business/message'
 import { addMailbox, updateMailbox, deleteMailbox, getMailboxes } from  '../business/mailbox'
+import { login, logout } from '../auth'
 
 module.exports = function (app) {
   // contact
@@ -32,6 +33,9 @@ module.exports = function (app) {
   app.put('/api/mailbox/:mailboxId', _updateMailbox);
 
   app.delete('/api/mailbox/:mailboxId', _deleteMailbox);
+
+  app.post('/api/login', _login);
+  app.post('/api/logout', _logout);
 }
 
 //TODO: check permission for all apis
@@ -128,5 +132,16 @@ const _updateMailbox = async (req, res) => {
   res.send(result);
 }
 
+const _login = async (req, res) => {
+  const { usename, password } = req.body
+  const result = await login(usename, password)
+  res.send(result)
+}
+
+const _logout = async (req, res) => {
+  const { usename } = req.body
+  const result = await logout(usename)
+  res.send(result)
+}
 
 const getUser = () => { }

@@ -5,13 +5,13 @@ import config from '../config'
 
 const addUser = admin_user => async (username, password, role, permissions) => {
   const hashedPassword = await hash(password)
-  const _currentUser = await User.findOneAsync({ _id: username })
+  const _currentUser = await User.findOneAsync({ username })
   if (_currentUser) {
     throw Errors.USER_EXIST()
   }
 
   const user = new User({
-    _id: username,
+    username,
     password: hashedPassword,
     role,
     permissions
@@ -27,7 +27,7 @@ const updateUser = admin_user => async (username, data) => {
 }
 
 const updateUserPassword = admin_user => async (username, currentPassword, newPassword) => {
-  const user = await User.findOne({ _id: username })
+  const user = await User.findOne({ username })
 
   if (user) {
     try {
@@ -36,7 +36,7 @@ const updateUserPassword = admin_user => async (username, currentPassword, newPa
 
       // user.password = newHashedPassword
       return User
-        .updateAsync({ _id: username }, { $set: { password: newHashedPassword } }, { new: true })
+        .updateAsync({ username }, { $set: { password: newHashedPassword } }, { new: true })
         .then(() => User.findOne({ _id: username }))
     } catch (ex) {
       throw Errors.USERNAME_OR_PASSWORD_NOT_MATCH()

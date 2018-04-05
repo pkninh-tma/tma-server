@@ -1,5 +1,6 @@
 const User =
   `type User {
+    _id: ID!
     username: String  
     role: String # ADMIN, MODERATOR, VIEWER
     permissions: [String!]

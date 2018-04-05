@@ -8,7 +8,7 @@ const loginErrorMsg = 'Username or password incorrect'
 
 const login = async (username, password) => {
   try {
-    const user = await User.findOne({ _id: username })
+    const user = await User.findOne({ username })
     if (!user) {
       return { status: 'Fail', message: loginErrorMsg }
     }

@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const contactSchema = new Schema({
-  _id: Schema.ObjectId,
+  // _id: Schema.ObjectId,
   firstName: String,
   lastName: String,
   phone: String,

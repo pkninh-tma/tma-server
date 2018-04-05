@@ -38,7 +38,7 @@ type Mutation {
   deleteUser(_id: ID, token: String): String
   deleteMailbox(_id: ID, token: String): String
   
-  login(loginInput: LoginInput): LoginInfo
+  login(loginInput: LoginInput): TokenInfo
   logout(token: String): Logout
 }
 `
