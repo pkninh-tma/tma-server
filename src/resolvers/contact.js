@@ -5,19 +5,15 @@ import { addContact, updateContact, deleteContact, getContacts } from '../busine
 const resolvers = {
   Query: {
     contacts: (root, args, context) => {
-      console.log('start')
+      
       const { skip, limit, sortByFields, searchTerm, token } = args
       checkPermission(token || context.token, 'VIEWER')
-      console.log('xxx21xx')
+      
       removeUndefined(args)
-      console.log('args', args)
       setSearchTerm(args, searchTerm)
       const sortBy = getSortBy(sortByFields)
-      console.log('xxxerrfaeg', args, skip, limit, sortBy)
-      return getContacts(args, skip, limit, sortBy).then(r => {
-        console.log('xxxxxx', r)
-        return r
-      })
+      
+      return getContacts(args, skip, limit, sortBy)
     }
   },
 

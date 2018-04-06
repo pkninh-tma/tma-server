@@ -3,7 +3,9 @@ import { addMessage, updateMessage, deleteMessage, getMessages } from  '../busin
 import { addMailbox, updateMailbox, deleteMailbox, getMailboxes } from  '../business/mailbox'
 import { login, logout } from '../auth'
 
-module.exports = function (app) {
+module.exports = function (app, parser) {
+  app.use(parser)
+
   // contact
 
   app.post('/api/contact', _createContact);
@@ -133,14 +135,14 @@ const _updateMailbox = async (req, res) => {
 }
 
 const _login = async (req, res) => {
-  const { usename, password } = req.body
-  const result = await login(usename, password)
+  const { username, password } = req.body
+  const result = await login(username, password)
   res.send(result)
 }
 
 const _logout = async (req, res) => {
-  const { usename } = req.body
-  const result = await logout(usename)
+  const { username } = req.body
+  const result = await logout(username)
   res.send(result)
 }
 

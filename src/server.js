@@ -78,7 +78,7 @@ server.use('/graphiql', graphiqlExpress({
 }))
 
 //RESTful APIs
-require('./rest/rest')(server);
+require('./rest/rest')(server, bodyParser.json());
 
 // server.use('/', express.static('public'))
 // server.use(express.static(path.resolve(__dirname, '..', 'public')));
