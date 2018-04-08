@@ -1,0 +1,30 @@
+@startuml
+object contact {
+  id
+  firstName
+  lastName
+  email
+  phone
+}
+object user {
+  id
+  username
+  role
+}
+object message {
+  id
+  from
+  to
+  subject
+  create_time
+  status
+}
+object mailbox {
+  id
+  name
+}
+
+user *-- contact : has
+user *-- message : has
+message --* mailbox
+@enduml

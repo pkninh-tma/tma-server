@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import config from '../config'
 import { Errors } from '../business/errors'
+import InvalidToken from './models/invalidToken'
 
 /**
  * check user permission and role of the token and return user info
@@ -15,6 +16,15 @@ const checkPermission = (token, role, permissionTag) => {
       username: "abc",
       role: "ADMIN"
     }
+  }
+  try {
+    const invalidToken = InvalidToken.findOne({ token })
+    if (invalidToken) {
+      throw Errors.UNAUTHORIZED()      
+    }
+  } catch(err) {
+    console.log(err)
+    throw Errors.UNAUTHORIZED()
   }
 
   try {

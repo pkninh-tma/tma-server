@@ -2,10 +2,15 @@ import { addContact, updateContact, deleteContact, getContacts } from '../busine
 import { addMessage, updateMessage, deleteMessage, getMessages } from  '../business/message'
 import { addMailbox, updateMailbox, deleteMailbox, getMailboxes } from  '../business/mailbox'
 import { login, logout } from '../auth'
+import config from '../config'
+
+var jwt = require('express-jwt');
 
 module.exports = function (app, parser) {
   app.use(parser)
-
+  app.use(jwt({ secret: config.jwtSecret })
+    .unless({path: ['/graphql', '/graphiql', '/api/login']}));
+  
   // contact
 
   app.post('/api/contact', _createContact);
@@ -44,6 +49,7 @@ module.exports = function (app, parser) {
 
 // contact
 const _createContact = async (req, res) => {
+  // TODO check decoded token as req.user
   const { firstName, lastName, email, phone } = req.body
   const user = getUser();
 
@@ -141,8 +147,8 @@ const _login = async (req, res) => {
 }
 
 const _logout = async (req, res) => {
-  const { username } = req.body
-  const result = await logout(username)
+  const { token } = req.body
+  const result = await logout(token)
   res.send(result)
 }
 

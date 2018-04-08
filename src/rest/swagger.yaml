@@ -1,0 +1,108 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: TMA App REST API Server
+# during dev, should point to your local machine
+host: localhost:4000
+# basePath prefixes all resource paths 
+basePath: /api
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /login:
+    post:
+      tags:
+      - "Authentication"
+      description: Login using username/password
+      # used as the method name of the controller
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "username"
+          description: "Username"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "404":
+          description: Can not authenticate the user and password combination
+          schema:
+             type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+  
+  /logout:
+    post:
+      tags:
+      - "Authentication"
+      description: Log out
+      # used as the method name of the controller
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "tokem"
+          description: "token"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "404":
+          description: Can not log out
+          schema:
+             type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+  
+  /contact:
+    get:
+      tags:
+      - "Contact"
+      description: Get the contacts
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "userId"
+          description: "User Id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"

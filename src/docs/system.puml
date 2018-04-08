@@ -1,0 +1,39 @@
+@startuml component
+node "Front end" {
+  frame "UI" {
+    [Menu]
+    [Login]
+    [Inbox]
+    [Contact]
+  }
+  frame "service" {
+    [Auth Service]
+    [Data Service]
+  }
+  [Login] -> [Auth Service]
+  [Inbox] -> [Data Service]
+  [Contact] -> [Data Service]
+}
+node "Backend" {
+  ' FTP - [Second Component]
+  ' [First Component] --> FTP
+
+  frame "Auth component" {
+    [Auth] -- Auth_API
+  }
+  frame "DB" {
+    [data access component] -- data_API
+  }
+
+}
+database "MongoDB" {
+  [data]
+}
+cloud {
+  [Internet]
+}
+[Auth Service] --> Auth_API
+[Data Service] --> data_API
+[data access component] --> [data]
+[Auth] --> [data]
+@enduml

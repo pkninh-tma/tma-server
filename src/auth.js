@@ -1,5 +1,6 @@
 import { verify } from './passwordHash'
 import User from './models/user'
+import InvalidToken from './models/invalidToken'
 import config from './config'
 
 import jwt from 'jsonwebtoken'
@@ -41,9 +42,14 @@ const login = async (username, password) => {
 
 }
 
-const logout = (username) => {
-  // log out
-  // req.session.destroy();
+const logout = (token) => {
+  try {
+    const invalidToken = new InvalidToken({ token })
+    return invalidToken.saveAsync()
+  } catch (err) {
+    console.log('got err', err)
+    return { message: 'Log out failed.' }
+  }
 }
 
 export { login, logout }
