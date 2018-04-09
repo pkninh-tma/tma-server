@@ -4,9 +4,9 @@ import { addUser, getUsers, deleteUser, updateUser, updateUserPassword, resetPas
 
 const resolvers = {
   Query: {
-    users: (root, args, context) => {
+    users: async (root, args, context) => {
       const { skip, limit, sortByFields, searchUsername, role, token } = args
-      checkPermission(token || context.token, 'ADMIN')
+      await checkPermission(token || context.token, 'ADMIN')
 
       removeUndefined(args)
       if (args.role === '') { delete args.role }
@@ -18,26 +18,26 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: (root, { user: { username, password, permissions, role, phone }, token}, context) => {
-      const user_ = checkPermission(token || context.token, 'ADMIN')
+    addUser: async (root, { user: { username, password, permissions, role, phone }, token}, context) => {
+      const user_ = await checkPermission(token || context.token, 'ADMIN')
 
       return addUser(user_.username)(username, password, role, phone, permissions)
     },
 
-    updateUser: (root, { username, user, token }, context) => {
-      const user_ = checkPermission(token || context.token, 'ADMIN')
+    updateUser: async (root, { username, user, token }, context) => {
+      const user_ = await checkPermission(token || context.token, 'ADMIN')
 
       return updateUser(user_.username)(username, user)
     },
 
-    deleteUser: (root, { username, token }, context) => {
-      const user_ = checkPermission(token || context.token, 'ADMIN')
+    deleteUser: async (root, { username, token }, context) => {
+      const user_ = await checkPermission(token || context.token, 'ADMIN')
 
       return deleteUser(user_.username)(username)
     },
 
-    updateUserPassword: (root, { username, currentPassword, newPassword, token }, context) => {
-      const user_ = checkPermission(token || context.token, 'ADMIN')
+    updateUserPassword: async (root, { username, currentPassword, newPassword, token }, context) => {
+      const user_ = await checkPermission(token || context.token, 'ADMIN')
       
       return updateUserPassword(user_.username)(username, currentPassword, newPassword)
     },

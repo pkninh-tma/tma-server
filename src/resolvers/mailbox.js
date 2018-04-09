@@ -4,9 +4,9 @@ import { addMailbox, updateMailbox, deleteMailbox, getMailboxes } from '../busin
 
 const resolvers = {
   Query: {
-    mailboxes: (root, args, context) => {
+    mailboxes: async (root, args, context) => {
       const { skip, limit, sortByFields, searchTerm, token } = args
-      checkPermission(token || context.token, 'VIEWER')
+      await checkPermission(token || context.token, 'VIEWER')
 
       removeUndefined(args)
       setSearchTerm(args, searchTerm)
@@ -16,20 +16,20 @@ const resolvers = {
   },
 
   Mutation: {
-    addMailbox: (root, { mailbox: { name }, token }, context) => {
-      const user = checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    addMailbox: async (root, { mailbox: { name }, token }, context) => {
+      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
 
       return addContact(user.username)(name, description)
     },
 
-    updateMailbox: (root, { _id, doc }, context) => {
-      const user = checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    updateMailbox: async (root, { _id, doc }, context) => {
+      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
 
       return updateContact(user.username)(_id, doc)
     },
 
-    deleteMailbox: (root, { _id, token }, context) => {
-      const user = checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    deleteMailbox: async (root, { _id, token }, context) => {
+      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
 
       return deleteMailbox(user.username)(_id)
     }

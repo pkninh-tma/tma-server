@@ -6,7 +6,7 @@ const config_ = {
     expiresIn: 3600 * 24 * 7, // 1 week
     MONGO_URL: 'mongodb://tma:123@ds233739.mlab.com:33739/tma-db',
     PORT: 4000,
-    noPermission: true,
+    noPermission: false,
     defaultPassword: '123'
   }
 }

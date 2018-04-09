@@ -4,9 +4,9 @@ import { addMessage, updateMessage, deleteMessage, getMessages } from '../busine
 
 const resolvers = {
   Query: {
-    messages: (root, args, context) => {
+    messages: async (root, args, context) => {
       const { skip, limit, sortByFields, searchTerm, token } = args
-      checkPermission(token || context.token, 'VIEWER')
+      await checkPermission(token || context.token, 'VIEWER')
 
       removeUndefined(args)
       setSearchTerm(args, searchTerm)
@@ -16,20 +16,20 @@ const resolvers = {
   },
 
   Mutation: {
-    addMessage: (root, { document: { name, description }, token }, context) => {
-      const user = checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    addMessage: async (root, { document: { name, description }, token }, context) => {
+      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
 
       return addDocument(user.username)(name, description)
     },
 
-    updateMessage: (root, { _id, doc }, context) => {
-      const user = checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    updateMessage: async (root, { _id, doc }, context) => {
+      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
 
       return updateDocument(user.username)(_id, doc)
     },
 
-    deleteMessage: (root, { _id, token }, context) => {
-      const user = checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    deleteMessage: async (root, { _id, token }, context) => {
+      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
 
       return deleteMessage(user.username)(_id)
     }

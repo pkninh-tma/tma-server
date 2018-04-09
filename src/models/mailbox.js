@@ -7,6 +7,6 @@ const mailboxSchema = new Schema({
   name: String
 }, { collection: 'mailbox' })
 
-const Malbox = mongoose.model('Mailbox', mailboxSchema)
+const Mailbox = mongoose.model('Mailbox', mailboxSchema)
 
-export default Malbox
+export default Mailbox

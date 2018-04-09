@@ -17,6 +17,11 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 paths:
   /login:
     post:
@@ -59,13 +64,8 @@ paths:
         - "application/json"
       produces:
         - "application/json"
-      parameters:
-        - in: "body"
-          name: "token"
-          description: "token"
-          required: true
-          schema:
-            type: "string"
+      security:
+         - Bearer: []
       responses:
         "200":
           description: Success
@@ -87,6 +87,8 @@ paths:
       description: Get the contacts
       produces:
         - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "path"
           name: "userId"
@@ -112,6 +114,8 @@ paths:
       description: Create the contact
       produces:
       - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "body"
           name: "contact"
@@ -139,6 +143,8 @@ paths:
       description: Get the contacts
       produces:
         - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "path"
           name: "contactId"
@@ -164,6 +170,8 @@ paths:
       description: Update the contact
       produces:
       - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "path"
           name: "contactId"
@@ -197,6 +205,8 @@ paths:
       description: Get the messages
       produces:
         - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "path"
           name: "userId"
@@ -221,7 +231,9 @@ paths:
       - "Contact"
       description: Create the message
       produces:
-      - "application/json"
+        - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "body"
           name: "message"
@@ -249,6 +261,8 @@ paths:
       description: Delete the message
       produces:
         - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "path"
           name: "messageId"
@@ -275,6 +289,8 @@ paths:
       description: Update the message
       produces:
       - "application/json"
+      security:
+        - Bearer: []
       parameters:
         - in: "path"
           name: "messageId"
@@ -307,6 +323,8 @@ paths:
       description: Get the mailboxes
       produces:
         - "application/json"
+      security:
+        - Bearer: []
       responses:
         "200":
           description: Success

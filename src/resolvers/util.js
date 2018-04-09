@@ -3,22 +3,9 @@ import config from '../config'
 import { Errors } from '../business/errors'
 import InvalidToken from '../models/invalidToken'
 
-/**
- * check user permission and role of the token and return user info
- * @param {*} token 
- * @param {*} role 
- * @param {*} permissionTag 
- * 
- */
-const checkPermission = (token, role, permissionTag) => {
-  if (config.noPermission) {
-    return {
-      username: "abc",
-      role: "ADMIN"
-    }
-  }
+const verifyInvalidToken = async (token) => {
   try {
-    const invalidToken = InvalidToken.findOne({ token })
+    const invalidToken = await InvalidToken.findOne({ token })    
     if (invalidToken) {
       throw Errors.UNAUTHORIZED()      
     }
@@ -26,6 +13,24 @@ const checkPermission = (token, role, permissionTag) => {
     console.log(err)
     throw Errors.UNAUTHORIZED()
   }
+}
+
+/**
+ * check user permission and role of the token and return user info
+ * @param {*} token 
+ * @param {*} role 
+ * @param {*} permissionTag 
+ * 
+ */
+const checkPermission = async (token, role, permissionTag) => {
+  if (config.noPermission) {
+    return {
+      username: "abc",
+      role: "ADMIN"
+    }
+  }
+  
+  await verifyInvalidToken(token)
 
   try {
     const decoded = jwt.verify(token, config.jwtSecret)
@@ -39,8 +44,15 @@ const checkPermission = (token, role, permissionTag) => {
     // }  
     throw Errors.UNAUTHORIZED()
   }
-  const userRole = decoded.role
-  const permissions = decoded.permissions
+
+  checkRolePermision(decoded, role)
+  // other kind of authorization goes here....
+  return decoded // user data
+}
+
+const checkRolePermision = (user, role) => {
+  const userRole = user.role
+  const permissions = user.permissions
 
   if (role === 'ADMIN' && userRole !== role) {
     throw Errors.UNAUTHORIZED()
@@ -57,8 +69,6 @@ const checkPermission = (token, role, permissionTag) => {
   if (role === 'VIEWER' && userRole !== role && userRole !== 'MODERATOR' && userRole !== 'ADMIN') {
     throw Errors.UNAUTHORIZED()
   }
-  // other kind of authorization goes here....
-  return decoded // user data
 }
 
 const removeUndefined = obj => Object.keys(obj).forEach(key => {
@@ -110,6 +120,8 @@ const setSearchUsername = (args, searchUsername) => {
 
 export {
   checkPermission,
+  verifyInvalidToken,
+  checkRolePermision,  
   removeUndefined,
   getSortBy,
   setSearchTerm,
