@@ -90,7 +90,7 @@ const _createMessage = async (req, res) => {
 
 const _getMessage = async (req, res) => {
   const user = getUser();
-  const result = await getMessage();
+  const result = await getMessages();
   res.send(result)
 }
 
