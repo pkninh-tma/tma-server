@@ -30,11 +30,11 @@ paths:
         - "application/json"
       parameters:
         - in: "body"
-          name: "username"
-          description: "Username"
+          name: "loginDetails"
+          description: "JSON includes Username and password"
           required: true
           schema:
-            type: "string"
+            type: "object"
       responses:
         "200":
           description: Success
@@ -61,7 +61,7 @@ paths:
         - "application/json"
       parameters:
         - in: "body"
-          name: "tokem"
+          name: "token"
           description: "token"
           required: true
           schema:
@@ -93,6 +93,220 @@ paths:
           description: "User Id"
           required: true
           type: "string"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+    post:
+      tags:
+      - "Contact"
+      description: Create the contact
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "contact"
+          description: "contact"
+          required: true
+          schema:
+            type: "object"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+  /contact/{contactId}:
+    delete:
+      tags:
+      - "Contact"
+      description: Get the contacts
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "contactId"
+          description: "Contact Id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+    put:
+      tags:
+      - "Contact"
+      description: Update the contact
+      produces:
+      - "application/json"
+      parameters:
+        - in: "path"
+          name: "contactId"
+          description: "Contact Id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "contact"
+          description: "contact"
+          required: true
+          schema:
+            type: "object"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"            
+
+  /message:
+    get:
+      tags:
+      - "Message"
+      description: Get the messages
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "userId"
+          description: "User Id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+    post:
+      tags:
+      - "Contact"
+      description: Create the message
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "message"
+          description: "message"
+          required: true
+          schema:
+            type: "object"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+  /message/{messageId}:
+    delete:
+      tags:
+      - "Message"
+      description: Delete the message
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "messageId"
+          description: "message Id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"
+            
+    put:
+      tags:
+      - "Message"
+      description: Update the message
+      produces:
+      - "application/json"
+      parameters:
+        - in: "path"
+          name: "messageId"
+          description: "message Id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "message"
+          description: "message"
+          required: true
+          schema:
+            type: "object"
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: "object"
+        "401":
+          description: Current login session is invalid
+          schema:
+            type: "object"
+        default:
+          description: Error
+          schema:
+            type: "object"            
+  /mailbox:
+    get:
+      tags:
+      - "Mailbox"
+      description: Get the mailboxes
+      produces:
+        - "application/json"
       responses:
         "200":
           description: Success

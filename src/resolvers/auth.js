@@ -1,6 +1,4 @@
-// import { checkPermission, removeUndefined, setSearchTerm, getSortBy } from './util'
-
-import { login } from '../auth'
+import { login, logout } from '../auth'
 
 const resolvers = {
   Query: {
@@ -13,7 +11,7 @@ const resolvers = {
       // req.logIn(user, function (err) {...
     },
     logout: (root, { token }, context) => {
-      // req.session.destroy();
+      return logout(token)
     }
   }
 }

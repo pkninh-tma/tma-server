@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import config from '../config'
 import { Errors } from '../business/errors'
-import InvalidToken from './models/invalidToken'
+import InvalidToken from '../models/invalidToken'
 
 /**
  * check user permission and role of the token and return user info
