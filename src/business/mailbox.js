@@ -1,6 +1,6 @@
 import Mailbox from '../models/mailbox'
 
-const getMailboxes = async (args, skip, limit, sortBy) => {
+const getMailbox = async (args, skip, limit, sortBy) => {
   const query = Mailbox.find(args).sort(sortBy).skip(skip).limit(limit)
   const total_ = Mailbox.find(args).count()
   const [result, total] = await Promise.all([query, total_])
@@ -29,5 +29,5 @@ export {
   addMailbox,
   updateMailbox,
   deleteMailbox,
-  getMailboxes
+  getMailbox
 }

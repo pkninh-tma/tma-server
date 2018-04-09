@@ -1,6 +1,6 @@
 import { addContact, updateContact, deleteContact, getContacts } from '../business/contact'
 import { addMessage, updateMessage, deleteMessage, getMessages } from  '../business/message'
-import { addMailbox, updateMailbox, deleteMailbox, getMailboxes } from  '../business/mailbox'
+import { addMailbox, updateMailbox, deleteMailbox, getMailbox } from  '../business/mailbox'
 import { login, logout } from '../auth'
 import config from '../config'
 
