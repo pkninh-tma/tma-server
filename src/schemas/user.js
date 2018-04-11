@@ -2,25 +2,20 @@ const User =
   `type User {
     _id: ID!
     username: String  
-    role: String # ADMIN, MODERATOR, VIEWER
-    permissions: [String!]
+    role: String # name of the role
   }`
 
 const UserInput =
   `input UserInput {
     username: String!
     password: String!
-    # ADMIN, MODERATOR, VIEWER
     role: String
-    permissions: [String!]
   }`
 
 
 const UserUpdateInput =
   `input UserUpdateInput {
-    # ADMIN, MODERATOR, VIEWER
-    role: String
-    permissions: [String!]
+    role: String # name of the role
   }`
 
 const UserListResult = 

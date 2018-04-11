@@ -6,7 +6,7 @@ const resolvers = {
   Query: {
     messages: async (root, args, context) => {
       const { skip, limit, sortByFields, searchTerm, token } = args
-      await checkPermission(token || context.token, 'VIEWER')
+      await checkPermission(token || context.token, "get_message")
 
       removeUndefined(args)
       setSearchTerm(args, searchTerm)
@@ -16,20 +16,19 @@ const resolvers = {
   },
 
   Mutation: {
-    addMessage: async (root, { document: { name, description }, token }, context) => {
-      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
-
-      return addDocument(user.username)(name, description)
+    addMessage: async (root, { message: { from, to, subject, type, status }, token }, context) => {
+      const user = await checkPermission(token || context.token, "add_message")
+      return addMessage(user.username)(name, from, to, subject, undefined, type, status)
     },
 
-    updateMessage: async (root, { _id, doc }, context) => {
-      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    updateMessage: async (root, { _id, message }, context) => {
+      const user = await checkPermission(token || context.token, "update_message")
 
-      return updateDocument(user.username)(_id, doc)
+      return updateMessage(user.username)(_id, doc)
     },
 
     deleteMessage: async (root, { _id, token }, context) => {
-      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+      const user = await checkPermission(token || context.token, "delete_message")
 
       return deleteMessage(user.username)(_id)
     }

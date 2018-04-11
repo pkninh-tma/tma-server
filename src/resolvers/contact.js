@@ -7,7 +7,7 @@ const resolvers = {
     contacts: async (root, args, context) => {
       
       const { skip, limit, sortByFields, searchTerm, token } = args
-      await checkPermission(token || context.token, 'VIEWER')
+      await checkPermission(token || context.token, "get_contact")
       
       removeUndefined(args)
       setSearchTerm(args, searchTerm)
@@ -19,19 +19,19 @@ const resolvers = {
 
   Mutation: {
     addContact: async (root, { contact: { name, description }, token }, context) => {
-      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+      const user = await checkPermission(token || context.token, "add_contact")
 
       return addContact(user.username)(name, description)
     },
 
-    updateMessage: async (root, { _id, doc }, context) => {
-      const user = checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    updateContact: async (root, { _id, doc }, context) => {
+      const user = checkPermission(token || context.token, "update_contact")
 
       return updateContact(user.username)(_id, doc)
     },
 
-    deleteMessage: async (root, { _id, token }, context) => {
-      const user = await checkPermission(token || context.token, 'MODERATOR', 'MESSAGE')
+    deleteContact: async (root, { _id, token }, context) => {
+      const user = await checkPermission(token || context.token, "delete_contact")
 
       return deleteContact(user.username)(_id)
     }

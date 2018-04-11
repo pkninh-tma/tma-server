@@ -6,7 +6,7 @@ const resolvers = {
   Query: {
     users: async (root, args, context) => {
       const { skip, limit, sortByFields, searchUsername, role, token } = args
-      await checkPermission(token || context.token, 'ADMIN')
+      await checkPermission(token || context.token)
 
       removeUndefined(args)
       if (args.role === '') { delete args.role }
@@ -19,25 +19,25 @@ const resolvers = {
 
   Mutation: {
     addUser: async (root, { user: { username, password, permissions, role, phone }, token}, context) => {
-      const user_ = await checkPermission(token || context.token, 'ADMIN')
+      const user_ = await checkPermission(token || context.token, "add_user")
 
       return addUser(user_.username)(username, password, role, phone, permissions)
     },
 
     updateUser: async (root, { username, user, token }, context) => {
-      const user_ = await checkPermission(token || context.token, 'ADMIN')
+      const user_ = await checkPermission(token || context.token, "update_user")
 
       return updateUser(user_.username)(username, user)
     },
 
     deleteUser: async (root, { username, token }, context) => {
-      const user_ = await checkPermission(token || context.token, 'ADMIN')
+      const user_ = await checkPermission(token || context.token, "delete_user")
 
       return deleteUser(user_.username)(username)
     },
 
     updateUserPassword: async (root, { username, currentPassword, newPassword, token }, context) => {
-      const user_ = await checkPermission(token || context.token, 'ADMIN')
+      const user_ = await checkPermission(token || context.token, "update_user_password")
       
       return updateUserPassword(user_.username)(username, currentPassword, newPassword)
     },

@@ -8,7 +8,8 @@ import InvalidToken from '../models/invalidToken'
 
 var jwt = require('express-jwt');
 
-const getToken = function fromHeaderOrQuerystring (req) {
+const getToken = (req) => {
+  // get from Header Or Query string
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       return req.headers.authorization.split(' ')[1];
   } else if (req.query && req.query.token) {
@@ -81,27 +82,27 @@ module.exports = function (app, parser) {
 const _createContact = async (req, res) => {
   // TODO check decoded token as req.user
   const { firstName, lastName, email, phone } = req.body
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "add_contact");
 
   const result = await addContact(user)(firstName, lastName, email, phone)
   res.send(result);
 }
 
 const _getContact = async (req, res) => {
-  const user = checkUser(req, "VIEWER");
+  const user = await checkUser(req, "get_contact");
   const result = await getContacts();
   res.send(result)
 }
 
 const _deleteContact = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "delete_contact");
   const { contactId } = req.params
   const result = await deleteContact(user)(contactId)
   res.send(result);
 }
 
 const _updateContact = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "update_contact");
   const { contactId } = req.params
   const { firstName, lastName, email, phone } = req.body
   const result = await updateContact(user)(contactId, { firstName, lastName, email, phone })
@@ -112,27 +113,27 @@ const _updateContact = async (req, res) => {
 
 const _createMessage = async (req, res) => {
   const { to, from, subject, createTime } = req.body
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "add_message");
 
   const result = await addMessage(user)(to, from, subject, createTime)
   res.send(result);
 }
 
 const _getMessage = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "get_message");
   const result = await getMessages();
   res.send(result)
 }
 
 const _deleteMessage = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "delete_message");
   const { messageId } = req.params
   const result = await deleteMessage(user)(messageId)
   res.send(result);
 }
 
 const _updateMessage = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "update_message");
   const { messageId } = req.params
   const { from, to, subject, createTime } = req.body
   const result = await updateMessage(user)(messageId, { from, to, subject, createTime })
@@ -143,27 +144,27 @@ const _updateMessage = async (req, res) => {
 
 const _createMailbox = async (req, res) => {
   const { name } = req.body
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "add_mailbox");
 
   const result = await addMailbox(user)(name)
   res.send(result);
 }
 
 const _getMailbox = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "get_mailbox");
   const result = await getMailbox();
   res.send(result)
 }
 
 const _deleteMailbox = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "delete_mailbox");
   const { mailboxId } = req.params
   const result = await deleteMailbox(user)(mailboxId)
   res.send(result);
 }
 
 const _updateMailbox = async (req, res) => {
-  const user = checkUser(req, "ADMIN");
+  const user = await checkUser(req, "update_mailbox");
   const { mailboxId } = req.params
   const { name } = req.body
   const result = await updateMailbox(user)(mailboxId, { name })
@@ -182,8 +183,8 @@ const _logout = async (req, res) => {
   res.send(result)
 }
 
-const checkUser = (req, role) => { 
+const checkUser = async (req, permission) => { 
   const { user } = req
-  checkRolePermision(user, role)
+  await checkRolePermision(user, permission)
   return user;
 }

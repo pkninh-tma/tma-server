@@ -8,13 +8,14 @@ const getMessages = async (args, skip, limit, sortBy) => {
   return { items: result, total }
 }
 
-const addMessage = admin_user => async (from, to, subject, create_time, type) => {
+const addMessage = admin_user => async (from, to, subject, create_time, type, status) => {
   const doc = new Message({
     from, 
     to,
     subject,
     create_time: create_time || moment().unix(),
-    type
+    type,
+    status
   })
   return doc.saveAsync()
 }

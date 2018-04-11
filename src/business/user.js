@@ -3,7 +3,7 @@ import { hash, verify } from '../passwordHash'
 import { Errors } from './errors'
 import config from '../config'
 
-const addUser = admin_user => async (username, password, role, permissions) => {
+const addUser = admin_user => async (username, password, role) => {
   const hashedPassword = await hash(password)
   const _currentUser = await User.findOneAsync({ username })
   if (_currentUser) {
@@ -14,7 +14,6 @@ const addUser = admin_user => async (username, password, role, permissions) => {
     username,
     password: hashedPassword,
     role,
-    permissions
   })
 
   return user.saveAsync()

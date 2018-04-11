@@ -10,7 +10,6 @@ const userSchema = new Schema({
     unique: true
   },
   role: String, // ADMIN, MODERATOR, VIEWER
-  permissions: [{ type: String }], // array of permission tags, each permission tag is a string of "MAILBOX", "CONTACT"
   password: String // hashed password  
 }, { collection: 'user' })
 

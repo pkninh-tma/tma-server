@@ -22,7 +22,6 @@ const login = async (username, password) => {
         username,
         role: user.role,
         _id: user._id,
-        permissions: user.permissions
       },
       config.jwtSecret,
       { expiresIn: config.expiresIn })
@@ -31,7 +30,6 @@ const login = async (username, password) => {
       message: 'Logged in successful.',
       token,
       role: user.role,
-      permissions: user.permissions,
       username
     }
 

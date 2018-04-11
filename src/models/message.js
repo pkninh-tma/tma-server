@@ -12,7 +12,8 @@ const messageSchema = new Schema({
     ref: 'User',
     index: true
   },
-  create_time: Number
+  create_time: Number,
+  status: String
 }, { collection: 'message' })
 
 const Message = mongoose.model('Message', messageSchema)

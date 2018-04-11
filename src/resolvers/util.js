@@ -2,14 +2,15 @@ import jwt from 'jsonwebtoken'
 import config from '../config'
 import { Errors } from '../business/errors'
 import InvalidToken from '../models/invalidToken'
+import Role from '../models/role'
 
 const verifyInvalidToken = async (token) => {
   try {
-    const invalidToken = await InvalidToken.findOne({ token })    
+    const invalidToken = await InvalidToken.findOne({ token })
     if (invalidToken) {
-      throw Errors.UNAUTHORIZED()      
+      throw Errors.UNAUTHORIZED()
     }
-  } catch(err) {
+  } catch (err) {
     console.log(err)
     throw Errors.UNAUTHORIZED()
   }
@@ -18,22 +19,20 @@ const verifyInvalidToken = async (token) => {
 /**
  * check user permission and role of the token and return user info
  * @param {*} token 
- * @param {*} role 
- * @param {*} permissionTag 
  * 
  */
-const checkPermission = async (token, role, permissionTag) => {
+const checkPermission = async (token, permission) => {
   if (config.noPermission) {
     return {
       username: "abc",
       role: "ADMIN"
     }
   }
-  
+
   await verifyInvalidToken(token)
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret)
+    const user = jwt.verify(token, config.jwtSecret)
     // console.log('decoded', decoded)
     //check the username and role for permission    
   } catch (err) {
@@ -45,30 +44,28 @@ const checkPermission = async (token, role, permissionTag) => {
     throw Errors.UNAUTHORIZED()
   }
 
-  checkRolePermision(decoded, role)
+  await checkRolePermision(user, permission)
   // other kind of authorization goes here....
-  return decoded // user data
+  return user
 }
 
-const checkRolePermision = (user, role) => {
-  const userRole = user.role
-  const permissions = user.permissions
+const checkRolePermision = async (user, permission) => {
+  const { role } = user
 
-  if (role === 'ADMIN' && userRole !== role) {
-    throw Errors.UNAUTHORIZED()
+  if (role === 'ADMIN') {
+    return
   }
-  //admin is also a moderator
-  if (role === 'MODERATOR') {
-    if (userRole !== role && userRole !== 'ADMIN') {
+  // TODO: query data for permission
+  const roleData = await Role.findAsync({ name: role })
+  if (roleData) {
+    const permissions = { roleData }
+    if (permissions.find(p => p == permission)) {
+      return
+    } else {
       throw Errors.UNAUTHORIZED()
     }
-    if (userRole === role && permissions.indexOf(permissionTag) < 0) {
-      throw Errors.UNAUTHORIZED()
-    }
   }
-  if (role === 'VIEWER' && userRole !== role && userRole !== 'MODERATOR' && userRole !== 'ADMIN') {
-    throw Errors.UNAUTHORIZED()
-  }
+  throw Errors.UNAUTHORIZED()
 }
 
 const removeUndefined = obj => Object.keys(obj).forEach(key => {
@@ -107,7 +104,7 @@ const setSearchId = (args, searchId) => {
 
 const setSearchIdMatch = (args, searchIdMatch) => {
   if (searchIdMatch && searchIdMatch.trim()) {
-    args['_id'] = { $eq: searchIdMatch}
+    args['_id'] = { $eq: searchIdMatch }
   }
 }
 
@@ -121,7 +118,7 @@ const setSearchUsername = (args, searchUsername) => {
 export {
   checkPermission,
   verifyInvalidToken,
-  checkRolePermision,  
+  checkRolePermision,
   removeUndefined,
   getSortBy,
   setSearchTerm,
