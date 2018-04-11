@@ -23,35 +23,15 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "firstName",
-									"value": "John",
-									"description": "",
-									"type": "text"
-								},
-								{
-									"key": "lastName",
-									"value": "Henry",
-									"description": "",
-									"type": "text"
-								},
-								{
-									"key": " email",
-									"value": "john.henry@hot.com",
-									"description": "",
-									"type": "text"
-								},
-								{
-									"key": "phone",
-									"value": "(111)-221-222",
-									"description": "",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": "{\n  \"firstName\":\"John\",\n  \"lastName\":\"Henry\",\n  \"email\":\"john.henry@mail.com\",\n  \"phone\":\"(123)-111-222\"\n}"
 						},
 						"url": {
 							"raw": "{{base-url}}/api/contact",
