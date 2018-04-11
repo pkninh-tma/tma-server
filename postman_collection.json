@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "96419b42-d029-4ee4-94e5-b6ec0ca67035",
+		"name": "tma-react-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "rest",
+			"description": "",
+			"item": [
+				{
+					"name": "api/contact",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstName",
+									"value": "John",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Henry",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": " email",
+									"value": "john.henry@hot.com",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "(111)-221-222",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base-url}}/api/contact",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"api",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/contact",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{base-url}}/api/contact",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"api",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"{{username}}\",\n\t\"password\":\"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base-url}}/api/login",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "api/mailbox",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{base-url}}/api/mailbox",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"api",
+								"mailbox"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
