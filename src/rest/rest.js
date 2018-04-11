@@ -19,19 +19,12 @@ const getToken = (req) => {
 }
 
 const isRevokedCallback = function(req, payload, done){
-  // var issuer = payload.iss;
-  // var tokenId = payload.jti;
   const token = getToken(req)    
 
   InvalidToken.findOne({ token }, (err, tokenRevoked) => {
     if (err) { return done(err); }
     return done(null, !!tokenRevoked)
   })
-
-  // data.getRevokedToken(issuer, tokenId, function(err, token){
-  //   if (err) { return done(err); }
-  //   return done(null, !!token);
-  // });
 };
 
 module.exports = function (app, parser) {
@@ -74,9 +67,11 @@ module.exports = function (app, parser) {
 
   app.post('/api/login', _login);
   app.post('/api/logout', _logout);
-}
 
-//TODO: check permission for all apis
+  app.head('/api/ping', (req, res) => {
+    res.status(200).send();
+  })
+}
 
 // contact
 const _createContact = async (req, res) => {
