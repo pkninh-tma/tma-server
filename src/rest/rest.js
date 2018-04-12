@@ -19,7 +19,7 @@ const getToken = (req) => {
 }
 
 const isRevokedCallback = function(req, payload, done){
-  const token = getToken(req)    
+  const token = getToken(req)
 
   InvalidToken.findOne({ token }, (err, tokenRevoked) => {
     if (err) { return done(err); }
@@ -29,12 +29,12 @@ const isRevokedCallback = function(req, payload, done){
 
 module.exports = function (app, parser) {
   app.use(parser)
-  app.use(jwt({ 
+  app.use(jwt({
     secret: config.jwtSecret,
     isRevoked: isRevokedCallback
   })
     .unless({path: ['/graphql', '/graphiql', '/api/login']}));
-  
+
   // contact
 
   app.post('/api/contact', _createContact);
@@ -69,7 +69,7 @@ module.exports = function (app, parser) {
   app.post('/api/logout', _logout);
 
   app.head('/api/ping', (req, res) => {
-    res.status(200).send();
+    res.status(204).send();
   })
 }
 
@@ -169,6 +169,9 @@ const _updateMailbox = async (req, res) => {
 const _login = async (req, res) => {
   const { username, password } = req.body
   const result = await login(username, password)
+  if(!result.token){
+    res.status(401)
+  }
   res.send(result)
 }
 
@@ -178,7 +181,7 @@ const _logout = async (req, res) => {
   res.send(result)
 }
 
-const checkUser = async (req, permission) => { 
+const checkUser = async (req, permission) => {
   const { user } = req
   await checkRolePermision(user, permission)
   return user;
